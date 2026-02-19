@@ -65,7 +65,18 @@ public class ExerciseD {
 		scanner.nextLine();
 		
 		// find gcd which is hcf
-		int hcf = gcd(nA, nB);
+		// int hcf = gcd(nA, nB);
+		
+		// manual working of gcd
+		int tempA = nA, tempB = nB;
+		while (tempB != 0) {
+			int rem = tempA % tempB; // store remainder in a var to prevent inaccurate calcs following this line
+			tempA = tempB; // replace tempA with tempB first to prevent inaccurate tempB moving forward
+			tempB = rem; // now tempB is replaced with remainder that was alr calculated
+		}
+		
+		// when nB == 0, assign hcf
+		int hcf = tempA;
 		
 		// calc lcm
 		int lcm = (nA * nB) / hcf;
