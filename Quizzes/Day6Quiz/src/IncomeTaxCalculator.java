@@ -41,19 +41,15 @@ public class IncomeTaxCalculator {
 	}
 	
 	public static Integer getTaxBracket(int income) {
-		// store target index
-		int index = -1;
-		
 		// loop thru minIncomeArray
 		// find largest index where user income is larger than minIncome
 		for (int i = minIncomeArray.length - 1; i >= 0; i--) {
-			if (income > minIncomeArray[i]) {
-				index = i;
-				break; // exit loop
+			if (income >= minIncomeArray[i]) {
+				return i;
 			}
 		}
 		
-		return index;
+		return -1; // return -1 if no applicable tax bracket
 	}
 	
 	public static Double calculateIncomeTax(int income, int index) {
@@ -69,8 +65,8 @@ public class IncomeTaxCalculator {
 	}
 	
 	public static void printResult(int income, double payTax) {
-		System.out.printf("For taxable annual income of $%,d, the tax payable amount is $%,.2f", 
-			income, payTax);
+		System.out.printf("For taxable annual income of $%,.2f, the tax payable amount is $%,.2f", 
+			(double) income, payTax);
 	}
 
 }

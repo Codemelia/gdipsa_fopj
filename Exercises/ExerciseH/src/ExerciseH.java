@@ -6,13 +6,12 @@ public class ExerciseH {
 private final static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		// conv input to number
-        // throws exception if input is not number
-        try {
-            int loop = 1;
-
-            while (loop == 1) {
-                // prompt user to select question to run
+		
+		// continue running while true
+        while (true) {
+        	
+        	try {
+        		// prompt user to select question to run
                 System.out.println(">>> Select the function you wish to run:\n1. Q1\n2. Q2\n3. Q3\n4. Q4\n5. Q5 \n6. Q6\n7. Q7");
                 int input = scanner.nextInt();
                 scanner.nextLine(); // clears newline in buffer from nextInt()
@@ -26,17 +25,17 @@ private final static Scanner scanner = new Scanner(System.in);
                 String cont = scanner.nextLine().trim().toLowerCase();
 
                 // if user does not want to continue, exit loop; else continue
-                if (!cont.equals("yes") && !cont.equals("y")) { loop = 0; } 
+                if (!cont.equals("yes") && !cont.equals("y")) { break; }
+            } catch (Exception ex) {
+                System.out.println(">>> Invalid input! Please enter your input as instructed");
+                scanner.nextLine(); // clear bad input
             }
             
-            // close scanner
-            scanner.close();
-
-        } catch (Exception ex) {
-            System.out.println(">>> Invalid input! Please enter your input as instructed");
-            scanner.close();
-            return; // exit program
         }
+        
+        // close scanner
+        scanner.close();
+        
 	}
 	
 	// select function
@@ -48,34 +47,93 @@ private final static Scanner scanner = new Scanner(System.in);
 				break;
 				
 			case 2:
-				System.out.println(">>> Please enter an array with values separated by spaces(eg. 4 10 9 20 3): ");
-				String in2 = scanner.nextLine();
+				System.out.println(">>> Please enter an array with values separated by spaces (eg. 4 10 9 20 3): ");
+				String in2 = scanner.nextLine(); // add-on user input
 				
-				//
-				
-				printArray(new int[] { 4, 10, 2, 3, 8, 6 });
+				int[] intArr2 = convInputToArr(in2);
+				if (intArr2 == null) System.out.println(">>> Your array was invalid."); // validate
+				else printArray(intArr2);
 				break;
 				
 			case 3:
-				String out3 = substitute("I like to read books", 'e', 'd');
-				System.out.printf(">>> New string: %s%n", out3);
+				System.out.println(">>> Please enter a string: ");
+				String in3 = scanner.nextLine(); // add-on user input
+				System.out.println(">>> Please enter the character you want to replace: ");
+				char oldChar = scanner.nextLine().trim().charAt(0);
+				System.out.println(">>> Please enter the character you want to insert: ");
+				char newChar = scanner.nextLine().trim().charAt(0);
+				
+				if (!Character.isLetter(oldChar) || !Character.isLetter(newChar)) {
+					System.out.println(">>> Your character inputs were invalid.");
+				} else {
+					String out3 = substitute(in3, oldChar, newChar);
+					System.out.printf(">>> New string: %s%n", out3);
+				}
+				
 				break;
 			
 			case 4:
-				String out4 = Arrays.toString(setArray(new int[] { 2, 3, 0, 5 }, 8));
-				System.out.printf(">>> New array: %s%n", out4);
+				System.out.println(">>> Please enter an array with values separated by spaces (eg. 4 10 9 20 3): ");
+				String in4 = scanner.nextLine(); // add-on user input
+				int[] intArr4 = convInputToArr(in4);
+				
+				System.out.println(">>> Please enter an integer you wish to use to override all values in the array: ");
+				boolean isValid4 = true;
+				int newInt = 0;
+				
+				try {
+					newInt = scanner.nextInt();
+					scanner.nextLine();
+				} catch (Exception ex) {
+					isValid4 = false;
+					scanner.nextLine(); // clear invalid input
+				}
+				
+				if (intArr4 == null || !isValid4) System.out.println(">>> Your inputs were invalid."); // validate
+				else printArray(setArray(intArr4, newInt));
 				break;
 				
 			case 5:
-				String out5 = Arrays.toString(resizeArray(new int[] {3, 2, 1, 8}, 6));
-				System.out.printf(">>> New array%s%n", out5);
+				System.out.println(">>> Please enter an array with values separated by spaces (eg. 4 10 9 20 3): ");
+				String in5 = scanner.nextLine(); // add-on user input
+				int[] intArr5 = convInputToArr(in5);
+				
+				System.out.println(">>> Please enter the size you wish to resize the array to: ");
+				int newSize = 0;
+				try {
+					newSize = scanner.nextInt();
+					scanner.nextLine();
+					
+					if (intArr5 == null) System.out.println(">>> Your inputs were invalid."); // validate
+					else printArray(resizeArray(intArr5, newSize));
+				} catch (Exception ex) {
+					System.out.println(">>> Your inputs were invalid.");
+					scanner.nextLine(); // clear invalid input
+				}
+				
 				break;
 				
 			case 6:
-				StringBuffer sb6 = new StringBuffer();
+				int min = 5; // default to 5
+				int max = 1000; // default to 1000
 				
+				try {
+					System.out.println(">>> Please enter the minimum threshold: ");
+					min = scanner.nextInt();
+					scanner.nextLine();
+					
+					System.out.println(">>> Please enter the maximum threshold: ");
+					max = scanner.nextInt();
+					scanner.nextLine();
+					
+				} catch (Exception ex) {
+					System.out.println(">>> Your inputs were invalid. Using default thresholds... ");
+					scanner.nextLine(); // clear invalid input
+				}
+				
+				StringBuffer sb6 = new StringBuffer();
 				boolean first = true;
-				for (int i = 5; i <= 1000; i++) {
+				for (int i = min; i <= max; i++) {
 					if (!isPrime(i)) continue; // breaks out of curr loop if not prime
 					if (!first) sb6.append(", ");
 					sb6.append(i);
@@ -87,8 +145,15 @@ private final static Scanner scanner = new Scanner(System.in);
 				
 			case 7:
 				StringBuffer sb7 = new StringBuffer();
-				int[][] A = { {3, -2, 5}, {3, 0, 4} };
-				int[][] B = { {2, 3}, {-9, 0}, {0, 4} };
+				int[][] A = { 
+					{3, -2, 5}, 
+					{3, 0, 4} 
+				};
+				int[][] B = { 
+					{2, 3}, 
+					{-9, 0}, 
+					{0, 4} 
+				};
 				
 				int[][] newArr = matrixMultiply(A, B);
 				
@@ -228,23 +293,36 @@ private final static Scanner scanner = new Scanner(System.in);
 		// outer loop new arr
 		for (int row = 0; row < newArr.length; row++) {
 			for (int col = 0; col < newArr[0].length; col++) {
-				
-				int sum = 0; // sum for curr cell in newArr
-				
+								
 				// inner loop for num of A cols (which is also num of B rows)
 				for (int comm = 0; comm < A[0].length; comm++) {
 					
 					// add multiplication of each corresponding cell to sum
-					sum += A[row][comm] * B[comm][col];					
+					newArr[row][col] += A[row][comm] * B[comm][col];					
 				}
-				
-				// insert sum into each cell
-				newArr[row][col] = sum;
 				
 			}	
 		}
 		
 		return newArr;
+		
+	}
+	
+	// helper functions
+	public static int[] convInputToArr(String input) {
+		// split input by space
+		String[] strArr = input.split(" ");
+		// new int arr
+		int[] intArr = new int[strArr.length];
+		
+		try {
+			for (int i = 0; i < strArr.length; i++) {
+				intArr[i] = Integer.parseInt(strArr[i]);
+			}
+			return intArr;
+		} catch (Exception ex) {
+			return null;
+		}
 		
 	}
 	

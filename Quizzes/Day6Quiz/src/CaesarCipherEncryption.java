@@ -7,24 +7,24 @@ public class CaesarCipherEncryption {
 
 	public static void main(String[] args) {
 		
-		String upperPlainText = ReturnUpperInputSentence();
-		String encryptedText = EncryptSentence(upperPlainText);
-		PrintEncryptedSentence(encryptedText);
+		String upperPlainText = returnUpperInputSentence();
+		String encryptedText = encryptSentence(upperPlainText);
+		printEncryptedSentence(encryptedText);
 		
-		String decryptedText = DecryptSentence(encryptedText);
-		PrintDecryptedSentence(decryptedText);
+		String decryptedText = decryptSentence(encryptedText);
+		printDecryptedSentence(decryptedText);
 		System.out.println("\nType any key to exit.");
 		in.nextLine();
 		in.close();
 	}
 	
 	// MY CODE
-	static String ReturnUpperInputSentence() {
+	static String returnUpperInputSentence() {
 		System.out.println(">>> Please enter the sentence: "); // prompt
 		return in.nextLine().toUpperCase(); // input
 	}
 	
-	static String EncryptSentence(String text) {
+	static String encryptSentence(String text) {
 		// conv to char array
 		char[] arr = text.toCharArray();
 		
@@ -36,7 +36,7 @@ public class CaesarCipherEncryption {
 			// get int form of letter
 			int num = (int) arr[i];
 			
-			// if int >= 88 (X), -26 to ensure wrap
+			// if int >= 88 (X - Z), -26 to ensure wrap
 			if (num >= 88) num -= 26;
 			
 			// shift letter by three letters forward
@@ -46,11 +46,11 @@ public class CaesarCipherEncryption {
 		return String.valueOf(arr); // return new string
 	}
 	
-	static void PrintEncryptedSentence(String sentence) {
+	static void printEncryptedSentence(String sentence) {
 		System.out.printf(">>> The encrypted sentence is: %s%n", sentence);
 	}
 	
-	static String DecryptSentence(String inEncryptedText) {
+	static String decryptSentence(String inEncryptedText) {
 		// conv to char array
 		char[] arr = inEncryptedText.toCharArray();
 		
@@ -62,7 +62,7 @@ public class CaesarCipherEncryption {
 			// get int form of letter
 			int num = (int) arr[i];
 			
-			// if int < 68, +26 to reverse wrap
+			// if int < 68 (A - B), +26 to reverse wrap
 			if (num < 68) num += 26;
 			
 			// shift letter by three letters backward
@@ -72,7 +72,7 @@ public class CaesarCipherEncryption {
 		return String.valueOf(arr); // return new string
 	}
 	
-	static void PrintDecryptedSentence(String sentence) {
+	static void printDecryptedSentence(String sentence) {
 		System.out.printf(">>> The decrypted sentence is: %s%n", sentence);
 	}
 
